@@ -95,7 +95,7 @@ def estimate_csd(lfp, coords=None, method=None,
     Returns
     -------
     Estimated CSD
-       neo.AnalogSignalArray Object
+       neo.AnalogSignal Object
        annotated with the spatial coordinates
 
     Raises
@@ -153,7 +153,7 @@ def estimate_csd(lfp, coords=None, method=None,
             k.cross_validate(lambdas, Rs)
         estm_csd = k.values()
         estm_csd = np.rollaxis(estm_csd, -1, 0)
-        output = neo.AnalogSignalArray(estm_csd * pq.uA / pq.mm**3,
+        output = neo.AnalogSignal(estm_csd * pq.uA / pq.mm**3,
                                        t_start=lfp[0].t_start,
                                        sampling_rate=lfp[0].sampling_rate)
 
@@ -184,7 +184,7 @@ def estimate_csd(lfp, coords=None, method=None,
                 raise ValueError("The order of {} filter must be \
                                   specified".format(kwargs['f_type']))
 
-        lfp = neo.AnalogSignalArray(np.asarray(lfp).T, units=lfp[0].units,
+        lfp = neo.AnalogSignal(np.asarray(lfp).T, units=lfp[0].units,
                                     sampling_rate=lfp[0].sampling_rate)
         csd_method = getattr(icsd, method)  # fetch class from icsd.py file
         csd_estimator = csd_method(lfp=lfp.magnitude.T * lfp.units,
@@ -194,11 +194,11 @@ def estimate_csd(lfp, coords=None, method=None,
 
         if process_estimate:
             csd_pqarr_filtered = csd_estimator.filter_csd(csd_pqarr)
-            output = neo.AnalogSignalArray(csd_pqarr_filtered.T,
+            output = neo.AnalogSignal(csd_pqarr_filtered.T,
                                            t_start=lfp.t_start,
                                            sampling_rate=lfp.sampling_rate)
         else:
-            output = neo.AnalogSignalArray(csd_pqarr.T, t_start=lfp.t_start,
+            output = neo.AnalogSignal(csd_pqarr.T, t_start=lfp.t_start,
                                            sampling_rate=lfp.sampling_rate)
         output.annotate(x_coords=coords)
     return output
@@ -328,5 +328,5 @@ def generate_lfp(csd_profile, ele_xx, ele_yy=None, ele_zz=None,
         rc.analogsignals = [asig]
         rc.create_relationship()
         lfp.append(asig)
-    # lfp = neo.AnalogSignalArray(lfp, sampling_rate=1000*pq.Hz, units='mV')
+    # lfp = neo.AnalogSignal(lfp, sampling_rate=1000*pq.Hz, units='mV')
     return lfp

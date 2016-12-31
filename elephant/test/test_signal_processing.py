@@ -47,10 +47,10 @@ class ZscoreTestCase(unittest.TestCase):
 
     def test_zscore_single_dup(self):
         '''
-        Test z-score on a single AnalogSignalArray, asking to return a
+        Test z-score on a single AnalogSignal, asking to return a
         duplicate.
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             self.test_seq1, units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
 
@@ -70,10 +70,10 @@ class ZscoreTestCase(unittest.TestCase):
 
     def test_zscore_single_inplace(self):
         '''
-        Test z-score on a single AnalogSignalArray, asking for an inplace
+        Test z-score on a single AnalogSignal, asking for an inplace
         operation.
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             self.test_seq1, units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
 
@@ -96,7 +96,7 @@ class ZscoreTestCase(unittest.TestCase):
         Test z-score on a single AnalogSignal with multiple dimensions, asking
         to return a duplicate.
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             np.transpose(
                 np.vstack([self.test_seq1, self.test_seq2])), units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
@@ -117,7 +117,7 @@ class ZscoreTestCase(unittest.TestCase):
         Test z-score on a single AnalogSignal with multiple dimensions, asking
         for an inplace operation.
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             np.vstack([self.test_seq1, self.test_seq2]), units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
 
@@ -135,10 +135,10 @@ class ZscoreTestCase(unittest.TestCase):
     def test_zscore_single_dup_int(self):
         '''
         Test if the z-score is correctly calculated even if the input is an
-        AnalogSignalArray of type int, asking for a duplicate (duplicate should
+        AnalogSignal of type int, asking for a duplicate (duplicate should
         be of type float).
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             self.test_seq1, units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=int)
 
@@ -156,9 +156,9 @@ class ZscoreTestCase(unittest.TestCase):
     def test_zscore_single_inplace_int(self):
         '''
         Test if the z-score is correctly calculated even if the input is an
-        AnalogSignalArray of type int, asking for an inplace operation.
+        AnalogSignal of type int, asking for an inplace operation.
         '''
-        signal = neo.AnalogSignalArray(
+        signal = neo.AnalogSignal(
             self.test_seq1, units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=int)
 
@@ -175,14 +175,14 @@ class ZscoreTestCase(unittest.TestCase):
 
     def test_zscore_list_dup(self):
         '''
-        Test zscore on a list of AnalogSignalArray objects, asking to return a
+        Test zscore on a list of AnalogSignal objects, asking to return a
         duplicate.
         '''
-        signal1 = neo.AnalogSignalArray(
+        signal1 = neo.AnalogSignal(
             np.transpose(np.vstack([self.test_seq1, self.test_seq1])),
             units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
-        signal2 = neo.AnalogSignalArray(
+        signal2 = neo.AnalogSignal(
             np.transpose(np.vstack([self.test_seq1, self.test_seq2])),
             units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
@@ -213,14 +213,14 @@ class ZscoreTestCase(unittest.TestCase):
 
     def test_zscore_list_inplace(self):
         '''
-        Test zscore on a list of AnalogSignalArray objects, asking for an
+        Test zscore on a list of AnalogSignal objects, asking for an
         inplace operation.
         '''
-        signal1 = neo.AnalogSignalArray(
+        signal1 = neo.AnalogSignal(
             np.transpose(np.vstack([self.test_seq1, self.test_seq1])),
             units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
-        signal2 = neo.AnalogSignalArray(
+        signal2 = neo.AnalogSignal(
             np.transpose(np.vstack([self.test_seq1, self.test_seq2])),
             units='mV',
             t_start=0. * pq.ms, sampling_rate=1000. * pq.Hz, dtype=float)
@@ -257,8 +257,8 @@ class ButterTestCase(unittest.TestCase):
         Test if correct type of filtering is performed according to how cut-off
         frequencies are given
         """
-        # generate white noise AnalogSignalArray
-        noise = neo.AnalogSignalArray(
+        # generate white noise AnalogSignal
+        noise = neo.AnalogSignal(
             np.random.normal(size=5000),
             sampling_rate=1000 * pq.Hz, units='mV')
 
@@ -297,8 +297,8 @@ class ButterTestCase(unittest.TestCase):
         self.assertAlmostEqual(psd[256], 0)
 
     def test_butter_filter_function(self):
-        # generate white noise AnalogSignalArray
-        noise = neo.AnalogSignalArray(
+        # generate white noise AnalogSignal
+        noise = neo.AnalogSignal(
             np.random.normal(size=5000),
             sampling_rate=1000 * pq.Hz, units='mV')
 
@@ -318,8 +318,8 @@ class ButterTestCase(unittest.TestCase):
         self.assertAlmostEqual(psd_filtfilt[0], psd_lfilter[0])
 
     def test_butter_invalid_filter_function(self):
-        # generate a dummy AnalogSignalArray
-        anasig_dummy = neo.AnalogSignalArray(
+        # generate a dummy AnalogSignal
+        anasig_dummy = neo.AnalogSignal(
             np.zeros(5000), sampling_rate=1000 * pq.Hz, units='mV')
         # test exception upon invalid filtfunc string
         kwds = {'signal': anasig_dummy, 'highpass_freq': 250.0 * pq.Hz,
@@ -328,8 +328,8 @@ class ButterTestCase(unittest.TestCase):
             ValueError, elephant.signal_processing.butter, **kwds)
 
     def test_butter_missing_cutoff_freqs(self):
-        # generate a dummy AnalogSignalArray
-        anasig_dummy = neo.AnalogSignalArray(
+        # generate a dummy AnalogSignal
+        anasig_dummy = neo.AnalogSignal(
             np.zeros(5000), sampling_rate=1000 * pq.Hz, units='mV')
         # test a case where no cut-off frequencies are given
         kwds = {'signal': anasig_dummy, 'highpass_freq': None,
@@ -341,28 +341,28 @@ class ButterTestCase(unittest.TestCase):
         # generate white noise data of different types
         noise_np = np.random.normal(size=5000)
         noise_pq = noise_np * pq.mV
-        noise = neo.AnalogSignalArray(noise_pq, sampling_rate=1000.0 * pq.Hz)
+        noise = neo.AnalogSignal(noise_pq, sampling_rate=1000.0 * pq.Hz)
 
         # check input as NumPy ndarray
         filtered_noise_np = elephant.signal_processing.butter(
             noise_np, 400.0, 100.0, fs=1000.0)
         self.assertTrue(isinstance(filtered_noise_np, np.ndarray))
         self.assertFalse(isinstance(filtered_noise_np, pq.quantity.Quantity))
-        self.assertFalse(isinstance(filtered_noise_np, neo.AnalogSignalArray))
+        self.assertFalse(isinstance(filtered_noise_np, neo.AnalogSignal))
         self.assertEqual(filtered_noise_np.shape, noise_np.shape)
 
         # check input as Quantity array
         filtered_noise_pq = elephant.signal_processing.butter(
             noise_pq, 400.0 * pq.Hz, 100.0 * pq.Hz, fs=1000.0)
         self.assertTrue(isinstance(filtered_noise_pq, pq.quantity.Quantity))
-        self.assertFalse(isinstance(filtered_noise_pq, neo.AnalogSignalArray))
+        self.assertFalse(isinstance(filtered_noise_pq, neo.AnalogSignal))
         self.assertEqual(filtered_noise_pq.shape, noise_pq.shape)
 
-        # check input as neo AnalogSignalArray
+        # check input as neo AnalogSignal
         filtered_noise = elephant.signal_processing.butter(noise,
                                                            400.0 * pq.Hz,
                                                            100.0 * pq.Hz)
-        self.assertTrue(isinstance(filtered_noise, neo.AnalogSignalArray))
+        self.assertTrue(isinstance(filtered_noise, neo.AnalogSignal))
         self.assertEqual(filtered_noise.shape, noise.shape)
 
         # check if the results from different input types are identical
@@ -381,9 +381,9 @@ class ButterTestCase(unittest.TestCase):
 
     def test_butter_multidim_input(self):
         noise_pq = np.random.normal(size=(4, 5000)) * pq.mV
-        noise_neo = neo.AnalogSignalArray(
+        noise_neo = neo.AnalogSignal(
             noise_pq.T, sampling_rate=1000.0 * pq.Hz)
-        noise_neo1d = neo.AnalogSignalArray(
+        noise_neo1d = neo.AnalogSignal(
             noise_pq[0], sampling_rate=1000.0 * pq.Hz)
         filtered_noise_pq = elephant.signal_processing.butter(
             noise_pq, 250.0, fs=1000.0)
@@ -426,7 +426,7 @@ class HilbertTestCase(unittest.TestCase):
             self.amplitude[:, 2] * np.cos(self.phase[:, 2]),
             self.amplitude[:, 3] * np.cos(self.phase[:, 3])])
 
-        self.long_signals = neo.AnalogSignalArray(
+        self.long_signals = neo.AnalogSignal(
             sigs.T, units='mV',
             t_start=0. * pq.ms,
             sampling_rate=(len(time) / (time[-1] - time[0])).rescale(pq.Hz),
@@ -440,7 +440,7 @@ class HilbertTestCase(unittest.TestCase):
             np.sin(2 * phases),
             np.cos(2 * phases)])
 
-        self.one_period = neo.AnalogSignalArray(
+        self.one_period = neo.AnalogSignal(
             sigs.T, units=pq.mV,
             sampling_rate=len(phases) * pq.Hz)
 

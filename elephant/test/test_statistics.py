@@ -370,7 +370,7 @@ class RateEstimationTestCase(unittest.TestCase):
             self.assertEqual("Instantaneous firing rate approximation contains "
                              "negative values, possibly caused due to machine "
                              "precision errors.", str(w[-1].message))
-        self.assertIsInstance(inst_rate, neo.core.AnalogSignalArray)
+        self.assertIsInstance(inst_rate, neo.core.AnalogSignal)
         self.assertEquals(
             inst_rate.sampling_period.simplified, sampling_period.simplified)
         self.assertEquals(inst_rate.simplified.units, pq.Hz)
@@ -545,7 +545,7 @@ class ComplexityPdfTestCase(unittest.TestCase):
         assert_array_equal(targ, complexity[:, 0].magnitude)
         self.assertEqual(1, complexity[:, 0].magnitude.sum())
         self.assertEqual(len(self.spiketrains)+1, len(complexity))
-        self.assertIsInstance(complexity, neo.AnalogSignalArray)
+        self.assertIsInstance(complexity, neo.AnalogSignal)
         self.assertEqual(complexity.units, 1*pq.dimensionless)
 
 
